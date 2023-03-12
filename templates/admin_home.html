@@ -1,0 +1,265 @@
+{% extends "layout.html" %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='admi_style.css')}}">
+    <script src="https://unpkg.com/@zxing/library@0.17.0"></script>
+    <style>
+    .box-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .box {
+    display: inline-block;
+    width: 45%;
+    height: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+  }
+  .red-box {
+    background-color: #ffcccc;
+    border-color: #ff3333;
+  }
+  .green-box {
+    background-color: #ccffcc;
+    border-color: #33cc33;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .name-column {
+    flex-basis: 35%;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
+  }
+  .date-column {
+    flex-basis: 25%;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
+  }
+  .type-column {
+    flex-basis: 20%;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
+  }
+  .status-column {
+    flex-basis: 20%;
+    text-align: center;
+  }
+  .item {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  .item:hover {
+    transform: translateX(5px);
+    box-shadow: 3px 3px 5px #ccc;
+  }
+  .item-container {
+    height: calc(100% - 50px);
+    overflow-y: auto;
+</style>
+
+<style>
+  #qr-scan-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin-left: 850px;
+  margin-bottom: 20px;
+}
+
+#qr-scan-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 5px #ccc;
+}
+</style>
+
+<style>
+  .item {
+    transition: opacity 0.3s ease-in-out;
+  }
+</style>
+  </head>
+  <body>
+   <h1 style="color:white;">Garbage Collection Requests</h1>
+    <h1 style="color:white;">Garbage Collection Requests</h1>
+    <div class="box-container">
+  <div class="box red-box">
+    <h2 style="text-align: center;">Garbage Collection Requests</h2>
+    <hr>
+    <div class="row">
+      <div class="column name-column" style="font-weight: bolder">Name</div>
+      <div class="column date-column" style="font-weight: bolder">Date</div>
+      <div class="column type-column" style="font-weight: bolder">Type</div>
+      <div class="column status-column" style="font-weight: bolder">Status</div>
+      <hr>
+      {% for user in garbage_collections %}
+        {% if user.status=="Pending" %}
+        
+        <div class="column name-column">{{ user.user_id }}</div>
+        <div class="column date-column">{{ user.date }}</div>
+        <div class="column type-column">{{ user.type }}</div>
+        <div class="column status-column">{{ user.status }}</div>
+       
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="box green-box">
+    <h2 style="text-align: center;">Garbage Collection Request Accepted</h2>
+    <hr>
+    <div class="row">
+      <div class="column name-column" style="font-weight: bolder">Name</div>
+      <div class="column date-column" style="font-weight: bolder">Date</div>
+      <div class="column type-column" style="font-weight: bolder">Type</div>
+      <div class="column status-column" style="font-weight: bolder">Status</div>
+      <hr>
+      {% for user in garbage_collections %}
+        {% if user.status=="Approved" %}
+        
+        <div class="column name-column">{{ user.user_id }}</div>
+        <div class="column date-column">{{ user.date }}</div>
+        <div class="column type-column">{{ user.type }}</div>
+        <div class="column status-column">{{ user.status }}</div>
+       
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+    
+      <!-- Your items will be added here -->
+</div>
+ 
+<script>
+const itemContainers = document.querySelectorAll(".item-container");
+
+itemContainers.forEach((itemContainer) => {
+  const items = itemContainer.querySelectorAll(".item");
+
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      item.remove();
+    });
+  });
+
+  itemContainer.addEventListener("DOMNodeInserted", (event) => {
+    if (event.target.classList.contains("item")) {
+      event.target.style.opacity = "0";
+      setTimeout(() => {
+        event.target.style.opacity = "1";
+      }, 0);
+    }
+  });
+
+  itemContainer.addEventListener("DOMNodeRemoved", (event) => {
+    if (event.target.classList.contains("item")) {
+      event.target.style.opacity = "0";
+      setTimeout(() => {
+        event.target.style.opacity = "1";
+      }, 0);
+    }
+  });
+});
+
+</script>
+
+<hr>
+
+
+    
+
+   <video id="qr-video" width="320" height="240" style="display:none; justify-content: space-evenly; margin-left: 770px; margin-bottom: 10px;"></video>
+
+   <button id="qr-scan-btn" style="justify-content: center;">Scan QR code</button>
+
+   <input type="hidden" id="qr-result" name="qr-result" value="">
+
+   <script>
+  // Get the video and result elements
+  const video = document.getElementById('qr-video');
+  const qrResult = document.getElementById('qr-result');
+
+  // Attach a click event listener to the button
+  const qrScanBtn = document.getElementById('qr-scan-btn');
+  qrScanBtn.addEventListener('click', async () => {
+    try {
+      // Get the camera stream and display the video
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      video.style.display = 'block';
+      await video.play();
+
+      // Decode the QR code from the camera feed
+      const codeReader = new ZXing.BrowserQRCodeReader();
+      const result = await codeReader.decodeOnceFromVideoDevice(undefined, 'qr-video');
+      qrResult.value = result.text;
+
+      // Stop the camera stream and hide the video
+      video.pause();
+      video.style.display = 'none';
+      stream.getTracks().forEach(track => track.stop());
+
+      // Submit the form with the scanned data
+      document.getElementById('garbage_collection_id').value = qrResult.value;
+      // document.getElementById('approve-form').submit();
+    } catch (error) {
+      console.error(error);
+    }
+  });
+</script>
+    
+	<!-- <form name="my-form" id="approve-form" onsubmit="return validform()" action="/approve" method="post"> -->
+  <!-- Email input -->
+  <!-- <div class="form-outline mb-4">
+    <input type="text" id="garbage_collection_id" class="form-control" name="garbage_collection_id" />
+    <label class="form-label" for="form2Example1">ID</label>
+  </div>
+  <button type="submit" class="btn btn-primary btn-block mb-4">COLLECTED</button>
+</form> -->
+
+
+<form name="my-form" id="approve-form form-outline mb-4" class="card-body cardbody-color p-lg-5 " onsubmit="return validform()" action="/approve" method="post">
+
+          <div class="mb-3">
+            <input  id="garbage_collection_id" type="password" class="form-control" id="Username" aria-describedby="ScannedID" placeholder="GarbageID" name="garbage_collection_id" required>
+          </div>
+  
+          <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100 btn btn-primary btn-block mb-4">COLLECTED</button></div>
+        </form>
+<hr>
+<a href="/reset_home">RESET</a>
+  </body>
+</html>
+{% endblock %}

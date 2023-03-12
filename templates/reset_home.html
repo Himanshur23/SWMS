@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reset By Admin</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- <h1>Garbage Collection Requests</h1>
+    <ul>
+      {% for user in garbage_collections %}
+        {% if user.status=="Pending" %}
+        <li>{{ user.id }} - {{ user.user_id }} - {{ user.date }} - {{ user.type }} - {{ user.status }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <hr>
+    <h1>Garbage Collection Request Accepted</h1>
+    <ul>
+      {% for user in garbage_collections %}
+        {% if user.status=="Approved" %}
+        <li>{{ user.id }} - {{ user.user_id }} - {{ user.date }} - {{ user.type }} - {{ user.status }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul> -->
+	<form name="my-form" onsubmit="return validform()" action="/reset" method="post">
+  <!-- Email input -->
+  <div class="form-outline mb-4">
+    <input type="text" id="form2Example1" class="form-control" name="garbage_collection_id" required/>
+    <label class="form-label" for="form2Example1">ID</label>
+  </div>
+  <button type="submit" class="btn btn-primary btn-block mb-4">RESET</button>
+</form>
+<hr>
+<a href="/logout">LOG OUT</a>
+  </body>
+</html>

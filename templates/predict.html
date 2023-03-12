@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!doctype html>
+<html>
+  <head>
+    <title>Waste Classifier</title>
+    <style>
+        body {
+  background-color: white;
+  font-family: Arial, sans-serif;
+}
+
+.he {
+  color: darkblue;
+  margin-left: 700px;
+}
+
+.mine{
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  margin-left: 700px;
+}
+
+.mine1 {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  /*margin-left: 700px;*/
+}
+
+.par {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.de{
+   background-color: darkblue;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   font-size: 18px;
+   cursor: pointer;
+   margin-left: 750px;
+   margin-bottom: 40px;
+   margin-top:30px;
+}
+    </style>
+  </head>
+  <body>
+    <h2 style="color: white">LOGIN FORM</h2>
+      <h2 style="color: white">LOGIN FORM</h2>
+    <h1 class="he">Waste Classifier</h1>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+      <input class="mine" type="file" name="image">
+      <input class="mine1" type="submit" value="Classify">
+    </form>
+    <h1 class="he">Waste Classifier - Result</h1>
+    <button class="de"><p class="par">Predicted class:                                                        {{ class_label }}</p></button>
+  </body>
+</html>
+{% endblock %}

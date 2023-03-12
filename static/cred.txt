@@ -1,0 +1,12 @@
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+how to correct it?
+SHA256:Yzapr7aVy1p9RKdqhvGo+vUgvl1/YMDte6CTw6SZ19s HIMANSHU@Himanshu-Rathore
+
+SHA256:9tF5JAs2yOl8zP3iFoP+LoxuKL5aG/DKqg0iZSmW9PU HIMANSHU@Himanshu-Rathore
+
+ynWV1pAgaAxuXhCG
