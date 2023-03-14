@@ -1,13 +1,48 @@
+# Render YAML
+# Use this file to deploy your Python project to Render.
+
 services:
   - name: web
-    env: python
-    buildCommand: |
-      apt-get update
-      apt-get install -y rustc cargo
-      /opt/render/project/src/.venv/bin/python -m pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:8080
+    buildCommand: python3 -m venv venv && . venv/bin/activate && pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+    env:
+      - PYTHONPATH=src/
+      - FLASK_ENV=production
 
 build:
-  # Use the official Python 3.7 Docker image as the build environment
-  # You can replace this with any other Docker image that suits your needs
+  # Use the official lightweight Python image.
+  # https://hub.docker.com/_/python
+  image: python:3.7-slim
+
+  # Configure the build context.
+  context: ./src
+
+  # Use `python` here because we are using a Python base image.
+  # We could alternatively use `python3` or `python3.7`.
   dockerfile: Dockerfile
+
+  # Set the build command.
+  # We install the dependencies in a virtual environment so that Render
+  # can cache the installed packages between builds.
+  # We also need to use the system's Rust and Cargo to compile extensions.
+  command: |
+    apt-get update
+    apt-get -y install gcc
+    apt-get -y install libpq-dev
+    apt-get -y install cargo
+    python3 -m venv venv
+    . venv/bin/activate
+    pip install --upgrade pip
+    pip install wheel
+    pip install -r requirements.txt
+
+# Specify the path to the Dockerfile relative to the build context.
+# In this case, the Dockerfile is in the root of the build context.
+# The build context is specified above in the `build` section.
+dockerfilePath: Dockerfile
+
+# Define the path to the directory that should be copied into the container.
+# In this case, we are copying the entire contents of the `src` directory.
+copyFiles:
+  - from: ./src
+    to: /usr/src/app
