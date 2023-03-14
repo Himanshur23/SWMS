@@ -1,0 +1,15 @@
+{
+  "build": {
+    "env": {
+      "RUSTUP_HOME": "/vercel/path0/.rustup",
+      "CARGO_HOME": "/vercel/path0/.cargo"
+    },
+    "commands": [
+      {
+        "use": "@vercel/rust",
+        "target": "18.04"
+      },
+      "pip3 install -r requirements.txt"
+    ]
+  }
+}
