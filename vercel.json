@@ -4,20 +4,18 @@
       "src": "app.py",
       "use": "@vercel/python",
       "config": {
-        "maxLambdaSize": "10mb"
-      }
-    },
-    {
-      "src": "./",
-      "use": "@vercel/static",
-      "config": {
-        "trailingSlash": true
-      }
-    },
-    {
-      "use": "@vercel/build-utils",
-      "inputs": {
-        "command": "curl https://sh.rustup.rs -sSf | sh -s -- -y && $HOME/.cargo/bin/cargo install --version=0.1.8 cbindgen"
+        "python": "3.8.x",
+        "build": {
+          "env": {
+            "RUSTUP_HOME": "/tmp/rustup",
+            "CARGO_HOME": "/tmp/cargo"
+          },
+          "commands": [
+            "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y",
+            "export PATH=\"$PATH:/tmp/cargo/bin\"",
+            "pip install -r requirements.txt"
+          ]
+        }
       }
     }
   ]
