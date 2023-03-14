@@ -67,6 +67,7 @@ mistune==0.8.4
 mysql==0.0.3
 mysql-connector-python==8.0.32
 mysqlclient==2.1.0
+mysql_config==4.7.1
 nbclassic==0.3.1
 nbclient==0.5.4
 nbconvert==6.1.0
