@@ -1,15 +1,24 @@
-"builds": [
-  {
-    "src": "app.py",
-    "use": "@vercel/python",
-    "config": {
-      "python_version": "3.9.x",
-      "rust": true
-    },
-    "env": {
-      "RUSTUP_HOME": "/vercel/.rustup",
-      "CARGO_HOME": "/vercel/.cargo",
-      "PATH": "/vercel/.cargo/bin:$PATH"
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python",
+      "config": {
+        "python_version": "3.9.x",
+        "rust": true
+      },
+      "env": {
+        "RUSTUP_HOME": "/vercel/.rustup",
+        "CARGO_HOME": "/vercel/.cargo",
+        "PATH": "/vercel/.cargo/bin:$PATH"
+      }
     }
-  }
-]
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.py"
+    }
+  ]
+}
