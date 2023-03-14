@@ -1,16 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_restful import Api, Resource
-from pybase64 import b64encode
+from flask_restful import Api
 import qrcode
 import io
-import numpy as np
 import pybase64
-import cv2
-from tensorflow import keras
-import tensorflow as tf
-from keras.models import load_model
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import numpy as np
@@ -18,24 +12,21 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'Ironman@2'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/waste_mangement_system'
-
-# postgres://waste_management_system_database_5guq_user:zqeLkrTQqoGh9UyaxQQJgB3Ncmp4ceUz@dpg-cg6s9jl269v5l67ata4g-a.oregon-postgres.render.com/waste_management_system_database_5guq
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/waste_mangement_system'
 db = SQLAlchemy(app)
 api = Api(app)
 
 model = load_model('waste_classifier.h5')
 
-classes = {0: 'Organic Waste', 1: 'Recyclable Waste'}
+# classes = {0: 'Organic Waste', 1: 'Recyclable Waste'}
 
 def preprocess_image(image_path):
     # Load the image and convert it to a numpy array
-    img = load_img(image_path, target_size=(224, 224))
+    img = load_img(image_path, target_size=(64, 64))
     img_array = img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
     # Preprocess the image
-    img_array /= 255.
+    # img_array /= 255.
     return img_array
 
 class userdata(db.Model):
@@ -44,41 +35,41 @@ class userdata(db.Model):
     '''
     sno = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    phone_num = db.Column(db.String(50), nullable=False)
+    phone_num = db.Column(db.String(12), nullable=False)
     msg = db.Column(db.String(120), nullable=False)
-    date = db.Column(db.String(50), nullable=True)
-    email = db.Column(db.String(50), nullable=False)
+    date = db.Column(db.String(12), nullable=True)
+    email = db.Column(db.String(20), nullable=False)
     d1 = db.Column(db.Integer, nullable=True)
-    d2 = db.Column(db.Integer, nullable=True)
-    d3 = db.Column(db.Integer, nullable=True)
-    d4 = db.Column(db.Integer, nullable=True)
-    d5 = db.Column(db.Integer, nullable=True)
-    d6 = db.Column(db.Integer, nullable=True)
-    d7 = db.Column(db.Integer, nullable=True)
-    d8 = db.Column(db.Integer, nullable=True)
-    d9 = db.Column(db.Integer, nullable=True)
-    d10 = db.Column(db.Integer, nullable=True)
-    d11 = db.Column(db.Integer, nullable=True)
-    d12 = db.Column(db.Integer, nullable=True)
-    d13 = db.Column(db.Integer, nullable=True)
-    d14 = db.Column(db.Integer, nullable=True)
-    d15 = db.Column(db.Integer, nullable=True)
-    d16 = db.Column(db.Integer, nullable=True)
-    d17 = db.Column(db.Integer, nullable=True)
-    d18 = db.Column(db.Integer, nullable=True)
-    d19 = db.Column(db.Integer, nullable=True)
-    d20 = db.Column(db.Integer, nullable=True)
-    d21 = db.Column(db.Integer, nullable=True)
-    d22 = db.Column(db.Integer, nullable=True)
-    d23 = db.Column(db.Integer, nullable=True)
-    d24 = db.Column(db.Integer, nullable=True)
-    d25 = db.Column(db.Integer, nullable=True)
-    d26 = db.Column(db.Integer, nullable=True)
-    d27 = db.Column(db.Integer, nullable=True)
-    d28 = db.Column(db.Integer, nullable=True)
-    d29 = db.Column(db.Integer, nullable=True)
-    d30 = db.Column(db.Integer, nullable=True)
-    d31 = db.Column(db.Integer, nullable=True)
+    d2 = db.Column(db.Integer, nullable=False)
+    d3 = db.Column(db.Integer, nullable=False)
+    d4 = db.Column(db.Integer, nullable=False)
+    d5 = db.Column(db.Integer, nullable=False)
+    d6 = db.Column(db.Integer, nullable=False)
+    d7 = db.Column(db.Integer, nullable=False)
+    d8 = db.Column(db.Integer, nullable=False)
+    d9 = db.Column(db.Integer, nullable=False)
+    d10 = db.Column(db.Integer, nullable=False)
+    d11 = db.Column(db.Integer, nullable=False)
+    d12 = db.Column(db.Integer, nullable=False)
+    d13 = db.Column(db.Integer, nullable=False)
+    d14 = db.Column(db.Integer, nullable=False)
+    d15 = db.Column(db.Integer, nullable=False)
+    d16 = db.Column(db.Integer, nullable=False)
+    d17 = db.Column(db.Integer, nullable=False)
+    d18 = db.Column(db.Integer, nullable=False)
+    d19 = db.Column(db.Integer, nullable=False)
+    d20 = db.Column(db.Integer, nullable=False)
+    d21 = db.Column(db.Integer, nullable=False)
+    d22 = db.Column(db.Integer, nullable=False)
+    d23 = db.Column(db.Integer, nullable=False)
+    d24 = db.Column(db.Integer, nullable=False)
+    d25 = db.Column(db.Integer, nullable=False)
+    d26 = db.Column(db.Integer, nullable=False)
+    d27 = db.Column(db.Integer, nullable=False)
+    d28 = db.Column(db.Integer, nullable=False)
+    d29 = db.Column(db.Integer, nullable=False)
+    d30 = db.Column(db.Integer, nullable=False)
+    d31 = db.Column(db.Integer, nullable=False)
     orgp = db.Column(db.Float, nullable=True)
     recp = db.Column(db.Float, nullable=True)
     incentive = db.Column(db.Float, nullable=True)
@@ -86,10 +77,10 @@ class userdata(db.Model):
 
 class garbagecollection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(80), db.ForeignKey('userdata.name'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('userdata.name'), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    type = db.Column(db.String(30), nullable=False)
-    status = db.Column(db.String(30), default='Pending')
+    type = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(20), default='Pending')
 
 class contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -97,9 +88,6 @@ class contact(db.Model):
     email = db.Column(db.String(30), nullable=True)
     subject = db.Column(db.String(100), nullable=True)
     complain = db.Column(db.String(500), nullable=True)
-
-# db.session.execute('ALTER TABLE userdata ADD CONSTRAINT userdata_name_key UNIQUE (userdata.name);')
-# db.session.commit()
 
 @app.route("/")
 def home():
@@ -123,15 +111,14 @@ def predict():
     # Make a prediction
     prediction = model.predict(img_array)
     # Get the class label
-    class_id = np.argmax(prediction[0])
-    class_label = classes[class_id]
+    if prediction[0][0] == 1:
+        class_label = "Recyclable Waste"
+    else:
+        class_label = "Organic Waste"
+    # class_id = np.argmax(prediction[0])
+    # class_label = classes[class_id]
     # Return the result
-    return render_template('predict.html', class_label=class_label)
-
-@app.route("/about")
-def about():
-    return render_template('about.html')
-
+    return render_template('predict.html',class_label=class_label)
 
 @app.route("/signup", methods = ['GET', 'POST'])
 def signup():
@@ -142,7 +129,7 @@ def signup():
         phone = request.form.get('phone')
         message = request.form.get('message')
         address = request.form.get('address')
-        entry = userdata(name=name, phone_num = phone, msg = message, email = email, address=address )
+        entry = userdata(name=name, phone_num = phone, msg = message, date= datetime.now(),email = email, address=address )
         db.session.add(entry)
         db.session.commit()
         session['name']=name
@@ -198,7 +185,7 @@ def user_home():
         type = request.form.get('type')
         setattr(user, 'd' + str(date.day), 1)
 
-        garbage_collection = garbagecollection(user_id=user.name, date=date, type=type, status="Pending")
+        garbage_collection = garbagecollection(user_id=user.name, date=date, type=type)
         db.session.add(garbage_collection)
         db.session.commit()
         return redirect(url_for('user_home'))
@@ -394,6 +381,5 @@ def logout():
     if 'gname' in session:
         session.pop('gname')
     return render_template('index.html')
-
 
 app.run(debug=True)
