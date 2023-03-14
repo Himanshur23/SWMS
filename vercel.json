@@ -1,15 +1,21 @@
 {
-  "build": {
-    "env": {
-      "RUSTUP_HOME": "/vercel/path0/.rustup",
-      "CARGO_HOME": "/vercel/path0/.cargo"
-    },
-    "commands": [
-      {
-        "use": "@vercel/rust",
-        "target": "18.04"
-      },
-      "pip3 install -r requirements.txt"
-    ]
+  "builds": [
+    {
+      "src": "build-command.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "maxLambdaSize": "75mb"
+      }
+    }
+  ],
+  "version": 2,
+  "env": {
+    "RUSTUP_HOME": "/vercel/.rustup",
+    "CARGO_HOME": "/vercel/.cargo"
+  },
+  "functions": {
+    "api": {
+      "memory": 1024
+    }
   }
 }
