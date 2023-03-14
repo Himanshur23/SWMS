@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
   {
-    "src": "main.py",
+    "src": "app.py",
     "use": "@vercel/python",
     "config": {
       "python_version": "3.9.x",
@@ -14,5 +14,11 @@
       }
     }
   }
-]
+],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
