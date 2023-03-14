@@ -1,13 +1,15 @@
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "pythonVersion": "3.9",
-        "buildCommand": "pip install -r requirements.txt && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && export PATH=$PATH:$HOME/.cargo/bin"
-      }
+"builds": [
+  {
+    "src": "main.py",
+    "use": "@vercel/python",
+    "config": {
+      "python_version": "3.9.x",
+      "rust": true
+    },
+    "env": {
+      "RUSTUP_HOME": "/vercel/.rustup",
+      "CARGO_HOME": "/vercel/.cargo",
+      "PATH": "/vercel/.cargo/bin:$PATH"
     }
-  ]
-}
+  }
+]
