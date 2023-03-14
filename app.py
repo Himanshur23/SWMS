@@ -5,8 +5,8 @@ from flask_restful import Api
 import qrcode
 import io
 import pybase64
-from tensorflow-cpu.keras.models import load_model
-from tensorflow-cpu.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import numpy as np
 import os
 
