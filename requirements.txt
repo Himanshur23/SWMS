@@ -89,6 +89,7 @@ pybase64==1.2.3
 pycparser==2.20
 Pygments==2.10.0
 PyMySQL==1.0.2
+pyo3
 pyparsing==2.4.7
 pypng==0.20220715.0
 pyrsistent==0.18.0
