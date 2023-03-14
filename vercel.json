@@ -1,21 +1,30 @@
 {
   "builds": [
     {
-      "src": "build-command.sh",
-      "use": "@vercel/static-build",
-      "config": {
-        "maxLambdaSize": "75mb"
+      "use": "@vercel/python",
+      "entrypoint": "app.app:app",
+      "command": "python -m pip install --upgrade pip && pip install -r requirements.txt",
+      "env": {
+        "RUSTUP_HOME": "/tmp/rustup_home",
+        "CARGO_HOME": "/tmp/cargo_home",
+        "PATH": "/tmp/cargo_home/bin:$PATH"
+      },
+      "subdirectories": {
+        "api": "./api"
       }
     }
   ],
-  "version": 2,
-  "env": {
-    "RUSTUP_HOME": "/vercel/.rustup",
-    "CARGO_HOME": "/vercel/.cargo"
+  "build": {
+    "command": [
+      "curl https://sh.rustup.rs -sSf | sh -s -- -y",
+      "source $HOME/.cargo/env",
+      "cargo install --path ./api"
+    ]
   },
-  "functions": {
-    "api": {
-      "memory": 1024
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/:1"
     }
-  }
+  ]
 }
