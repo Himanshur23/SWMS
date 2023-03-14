@@ -1,6 +1,13 @@
+services:
+  - name: web
+    env: python
+    buildCommand: |
+      apt-get update
+      apt-get install -y rustc cargo
+      /opt/render/project/src/.venv/bin/python -m pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:8080
+
 build:
+  # Use the official Python 3.7 Docker image as the build environment
+  # You can replace this with any other Docker image that suits your needs
   dockerfile: Dockerfile
-  command: |
-    apt-get update
-    apt-get install -y rustc cargo
-    /opt/render/project/src/.venv/bin/python -m pip install -r requirements.txt
