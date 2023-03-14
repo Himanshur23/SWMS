@@ -12,7 +12,8 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'Ironman@2'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/waste_mangement_system'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/waste_mangement_system'
 db = SQLAlchemy(app)
 api = Api(app)
 
