@@ -383,4 +383,3 @@ def logout():
         session.pop('gname')
     return render_template('index.html')
 
-app.run(debug=True)
